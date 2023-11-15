@@ -3,15 +3,15 @@
         {
             "src": "app.py",
             "use": "@vercel/python"
+        }
+    ],
+    "routes": [
+        {
+            "handle": "filesystem"
         },
-        "routes": [
-            {
-                "handle": "filesystem"
-            },
-            {
-                "src": "/.*",
-                "dest": "app.py"
-            }
-        ]
+        {
+            "src": "/.*",
+            "dest": "app.py"
+        }
     ]
 }
