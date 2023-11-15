@@ -24,6 +24,11 @@ class SignUp(db.Model):
     zip_code = db.Column(db.String(20), nullable=False)
 
 
+@app.route("/")
+def hello_world():
+    return "Hello, World!"
+
+
 @app.route("/api/signup", methods=["POST"])
 def signup():
     # Assuming you want to receive JSON data
