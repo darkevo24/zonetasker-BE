@@ -6,7 +6,7 @@ app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # Configure the SQLite database
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///zonetasker.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///:memory:'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 # Initialize SQLAlchemy
