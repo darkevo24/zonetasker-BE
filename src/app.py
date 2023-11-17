@@ -6,7 +6,7 @@ app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # Configure the SQLite database
-app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///:memory:'
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgres://default:Jpg7lu0eQLtR@ep-lingering-poetry-97048855.us-east-1.postgres.vercel-storage.com:5432/verceldb"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 # Initialize SQLAlchemy
