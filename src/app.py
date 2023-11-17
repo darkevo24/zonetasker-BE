@@ -46,14 +46,6 @@ class SignUp(db.Model):
     zip_code = db.Column(db.String(20), nullable=False)
 
 
-# Create an association table for the many-to-many relationship between Task and Category
-task_categories = db.Table(
-    "task_categories",
-    db.Column("task_id", db.Integer, db.ForeignKey("task.id")),
-    db.Column("category_id", db.Integer, db.ForeignKey("category.id")),
-)
-
-
 @app.route("/api/data", methods=["GET"])
 def get_all_signups():
     signups = SignUp.query.all()
