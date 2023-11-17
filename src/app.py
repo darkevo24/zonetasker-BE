@@ -15,11 +15,25 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 
+# Create a new model for categories
+class Category(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False)
+
+
+# Modify your existing Task model to include a relationship with Category
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     task = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String(255))
     applicants = db.Column(db.Integer, nullable=False)
+
+    # Establish a relationship with Category
+    categories = db.relationship(
+        "Category",
+        secondary="task_categories",
+        backref=db.backref("tasks", lazy="dynamic"),
+    )
 
 
 class SignUp(db.Model):
@@ -30,6 +44,14 @@ class SignUp(db.Model):
     mobile_phone = db.Column(db.String(20), nullable=False)
     password = db.Column(db.String(100), nullable=False)
     zip_code = db.Column(db.String(20), nullable=False)
+
+
+# Create an association table for the many-to-many relationship between Task and Category
+task_categories = db.Table(
+    "task_categories",
+    db.Column("task_id", db.Integer, db.ForeignKey("task.id")),
+    db.Column("category_id", db.Integer, db.ForeignKey("category.id")),
+)
 
 
 @app.route("/api/data", methods=["GET"])
