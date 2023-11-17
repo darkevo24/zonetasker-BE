@@ -32,11 +32,6 @@ class SignUp(db.Model):
     zip_code = db.Column(db.String(20), nullable=False)
 
 
-@app.route("/api/hello")
-def hello_world():
-    return "Hello, World!"
-
-
 @app.route("/api/data", methods=["GET"])
 def get_all_signups():
     signups = SignUp.query.all()
