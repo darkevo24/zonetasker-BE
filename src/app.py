@@ -15,13 +15,19 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 
-# Create a new model for categories
+# Define the association table for the many-to-many relationship
+task_categories = db.Table(
+    "task_categories",
+    db.Column("task_id", db.Integer, db.ForeignKey("task.id")),
+    db.Column("category_id", db.Integer, db.ForeignKey("category.id")),
+)
+
+
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
 
 
-# Modify your existing Task model to include a relationship with Category
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     task = db.Column(db.String(255), nullable=False)
@@ -31,7 +37,7 @@ class Task(db.Model):
     # Establish a relationship with Category
     categories = db.relationship(
         "Category",
-        secondary="task_categories",
+        secondary=task_categories,
         backref=db.backref("tasks", lazy="dynamic"),
     )
 
