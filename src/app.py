@@ -34,7 +34,7 @@ class Category(db.Model):
 
 
 class Task(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     task = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String(255))
     applicants = db.Column(db.Integer, nullable=False)
