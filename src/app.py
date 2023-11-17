@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -14,6 +15,8 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 # Initialize SQLAlchemy
 db = SQLAlchemy(app)
 
+# Initialize Flask-Migrate
+migrate = Migrate(app, db)
 
 # Define the association table for the many-to-many relationship
 task_categories = db.Table(
