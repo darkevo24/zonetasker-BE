@@ -35,6 +35,45 @@ def hello_world():
     return "Hello, World!"
 
 
+@app.route("/api/data", methods=["GET"])
+def get_all_signups():
+    signups = SignUp.query.all()
+
+    signup_list = []
+    for signup in signups:
+        signup_dict = {
+            "id": signup.id,
+            "first_name": signup.first_name,
+            "last_name": signup.last_name,
+            "email_address": signup.email_address,
+            "mobile_phone": signup.mobile_phone,
+            "password": signup.password,
+            "zip_code": signup.zip_code,
+        }
+        signup_list.append(signup_dict)
+
+    return jsonify({"profile": signup_list})
+
+
+@app.route("/api/data/<int:id>", methods=["GET"])
+def get_signup_by_id(id):
+    signup = SignUp.query.get(id)
+
+    if signup:
+        signup_dict = {
+            "id": signup.id,
+            "first_name": signup.first_name,
+            "last_name": signup.last_name,
+            "email_address": signup.email_address,
+            "mobile_phone": signup.mobile_phone,
+            "password": signup.password,
+            "zip_code": signup.zip_code,
+        }
+        return jsonify({"profile": signup_dict})
+    else:
+        return jsonify({"message": "Signup not found"}), 404
+
+
 @app.route("/api/tasks", methods=["GET"])
 def get_tasks():
     tasks = Task.query.all()
