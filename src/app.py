@@ -12,6 +12,7 @@ CORS(app, resources={r"/api/*": {"origins": "*"}})
 app.config[
     "SQLALCHEMY_DATABASE_URI"
 ] = "postgresql+psycopg2://default:Jpg7lu0eQLtR@ep-lingering-poetry-97048855.us-east-1.postgres.vercel-storage.com:5432/verceldb"
+# app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite3"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 # Initialize SQLAlchemy
@@ -20,31 +21,13 @@ db = SQLAlchemy(app)
 # Initialize Flask-Migrate
 migrate = Migrate(app, db)
 
-# Define the association table for the many-to-many relationship
-task_categories = db.Table(
-    "task_categories",
-    db.Column("task_id", db.Integer, db.ForeignKey("task.id")),
-    db.Column("category_id", db.Integer, db.ForeignKey("category.id")),
-)
-
-
-class Category(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255), nullable=False)
-
 
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     task = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String(255))
     applicants = db.Column(db.Integer, nullable=False)
-
-    # Establish a relationship with Category
-    categories = db.relationship(
-        "Category",
-        secondary=task_categories,
-        backref=db.backref("tasks", lazy="dynamic"),
-    )
+    categories = db.Column(db.String(255), nullable=True)
 
 
 class SignUp(db.Model):
