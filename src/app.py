@@ -2,8 +2,10 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_migrate import Migrate
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # Configure the SQLite database
@@ -200,9 +202,16 @@ def login():
         return jsonify({"error": "Invalid email address or password"}), 401
 
 
+# For Vercel compatibility, you need to change how the app is run
+def create_app():
+    return app
+
+
+app = create_app()
+
 if __name__ == "__main__":
     # Create the database tables before running the app
     with app.app_context():
         db.create_all()
 
-    app.run(debug=True)
+    app.run(debug=False)
