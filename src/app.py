@@ -30,7 +30,7 @@ class SignUp(db.Model):
     zip_code = db.Column(db.String(20), nullable=False)
 
 
-@app.route("/")
+@app.route("/api/hello")
 def hello_world():
     return "Hello, World!"
 
