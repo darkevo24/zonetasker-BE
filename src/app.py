@@ -106,6 +106,7 @@ def get_task(task_id):
             "task": task.task,
             "description": task.description,
             "applicants": task.applicants,
+            "categories": task.categories,
         }
     )
 
@@ -117,6 +118,7 @@ def create_task():
         task=data["task"],
         description=data.get("description", ""),
         applicants=data["applicants"],
+        categories=data["categories"],
     )
     db.session.add(new_task)
     db.session.commit()
