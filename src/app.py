@@ -28,6 +28,7 @@ class Task(db.Model):
     description = db.Column(db.String(255))
     applicants = db.Column(db.Integer, nullable=False)
     categories = db.Column(db.String(255), nullable=False)
+    email = db.Column(db.String(255), nullable=False)
 
 
 class SignUp(db.Model):
@@ -89,6 +90,7 @@ def get_tasks():
             "description": task.description,
             "applicants": task.applicants,
             "categories": task.categories,
+            "email": task.email,
         }
         for task in tasks
     ]
@@ -107,6 +109,7 @@ def get_task(task_id):
             "description": task.description,
             "applicants": task.applicants,
             "categories": task.categories,
+            "email": task.email,
         }
     )
 
@@ -119,10 +122,19 @@ def create_task():
         description=data.get("description", ""),
         applicants=data["applicants"],
         categories=data["categories"],
+        email=data["email"],
     )
     db.session.add(new_task)
     db.session.commit()
     return jsonify({"message": "Task created successfully"}), 201
+
+
+@app.route("/api/tasks", methods=["DELETE"])
+def delete_all_tasks():
+    # Assuming you want to delete all tasks
+    Task.query.delete()
+    db.session.commit()
+    return jsonify({"message": "All tasks deleted successfully"}), 200
 
 
 @app.route("/api/tasks/<int:task_id>", methods=["DELETE"])
