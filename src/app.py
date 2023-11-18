@@ -157,21 +157,36 @@ def delete_task(task_id):
     return jsonify({"message": f"Task with ID {task_id} deleted successfully"}), 200
 
 
-@app.route("/api/signup/<string:email>", methods=["GET"])
-def get_signup_by_email(email):
-    signup = SignUp.query.filter_by(email_address=email).one()
-    signup_dict = {
-        "id": signup.id,
-        "first_name": signup.first_name,
-        "last_name": signup.last_name,
-        "email_address": signup.email_address,
-        "mobile_phone": signup.mobile_phone,
-        "password": signup.password,
-        "zip_code": signup.zip_code,
-        "city": signup.city,
-        "province": signup.province,
-    }
-    return jsonify({"profile": signup_dict})
+@app.route("/api/signup/<string:email>", methods=["GET", "DELETE"])
+def signup_by_email(email):
+    if request.method == "GET":
+        # Retrieve signup by email
+        signup = SignUp.query.filter_by(email_address=email).first()
+        if signup:
+            signup_dict = {
+                "id": signup.id,
+                "first_name": signup.first_name,
+                "last_name": signup.last_name,
+                "email_address": signup.email_address,
+                "mobile_phone": signup.mobile_phone,
+                "password": signup.password,
+                "zip_code": signup.zip_code,
+                "city": signup.city,
+                "province": signup.province,
+            }
+            return jsonify({"profile": signup_dict})
+        else:
+            return jsonify({"error": "Signup not found"}), 404
+
+    elif request.method == "DELETE":
+        # Delete signup by email
+        signup = SignUp.query.filter_by(email_address=email).first()
+        if signup:
+            db.session.delete(signup)
+            db.session.commit()
+            return jsonify({"message": "Signup deleted successfully"})
+        else:
+            return jsonify({"error": "Signup not found"}), 404
 
 
 @app.route("/api/signup", methods=["POST"])
