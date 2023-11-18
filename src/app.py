@@ -88,6 +88,7 @@ def get_tasks():
             "task": task.task,
             "description": task.description,
             "applicants": task.applicants,
+            "categories": task.categories,
         }
         for task in tasks
     ]
