@@ -39,6 +39,8 @@ class SignUp(db.Model):
     mobile_phone = db.Column(db.String(20), nullable=False)
     password = db.Column(db.String(100), nullable=False)
     zip_code = db.Column(db.String(20), nullable=False)
+    city = db.Column(db.String(50), nullable=False)
+    province = db.Column(db.String(50), nullable=False)
 
 
 @app.route("/api/data", methods=["GET"])
@@ -166,6 +168,8 @@ def get_signup_by_email(email):
         "mobile_phone": signup.mobile_phone,
         "password": signup.password,
         "zip_code": signup.zip_code,
+        "city": signup.city,
+        "province": signup.province,
     }
     return jsonify({"profile": signup_dict})
 
@@ -196,6 +200,8 @@ def signup():
         mobile_phone=data["mobilePhoneCountryCode"],
         password=data["password"],
         zip_code=data["zipCode"],
+        city=data["city"],
+        province=data["province"],
     )
 
     db.session.add(new_signup)
