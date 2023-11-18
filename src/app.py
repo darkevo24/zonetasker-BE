@@ -27,7 +27,7 @@ class Task(db.Model):
     task = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String(255))
     applicants = db.Column(db.Integer, nullable=False)
-    categories = db.Column(db.String(255), nullable=True)
+    categories = db.Column(db.String(255), nullable=False)
 
 
 class SignUp(db.Model):
