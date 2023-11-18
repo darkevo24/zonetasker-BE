@@ -137,6 +137,21 @@ def delete_task(task_id):
     return jsonify({"message": f"Task with ID {task_id} deleted successfully"}), 200
 
 
+@app.route("/api/signup/<string:email>", methods=["GET"])
+def get_signup_by_email(email):
+    signup = SignUp.query.filter_by(email_address=email).one()
+    signup_dict = {
+        "id": signup.id,
+        "first_name": signup.first_name,
+        "last_name": signup.last_name,
+        "email_address": signup.email_address,
+        "mobile_phone": signup.mobile_phone,
+        "password": signup.password,
+        "zip_code": signup.zip_code,
+    }
+    return jsonify({"profile": signup_dict})
+
+
 @app.route("/api/signup", methods=["POST"])
 def signup():
     # Assuming you want to receive JSON data
