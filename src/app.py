@@ -82,7 +82,13 @@ def get_signup_by_id(id):
 
 @app.route("/api/tasks", methods=["GET"])
 def get_tasks():
-    tasks = Task.query.all()
+    email_param = request.args.get("email")
+
+    if email_param:
+        tasks = Task.query.filter_by(email=email_param).all()
+    else:
+        tasks = Task.query.all()
+
     task_list = [
         {
             "id": task.id,
@@ -212,7 +218,7 @@ def login():
     if user and user.password == data["password"]:
         return jsonify({"message": "Login successful"}), 200
     else:
-        return jsonify({"error": "Invalid email address or password"}), 401
+        return jsonify({"message": "Invalid email address or password"})
 
 
 # For Vercel compatibility, you need to change how the app is run
